@@ -94,6 +94,8 @@ def crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time):
     mat = pd.DataFrame({'Tiempo':vec_time ,
                    'Vel X':vx_dup ,
                    'Vel Y': vy_dup})
+
+    
     return mat
 
 def graficadora(mat_vel, delta, ruta):
