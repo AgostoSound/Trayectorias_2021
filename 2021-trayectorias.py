@@ -13,7 +13,7 @@ dir_out = './SALIDAS'
 
 def es_divisible(largo):
     # esta funcion sirve para calcular un valor optimo para los intervalos
-    # toma la longitud del arreglo y revisa si es divisible por algun entero del 1 al 55 y
+    # toma la longitud del arreglo y revisa si es divisible por algun entero del 1 al 300 y
     # luego de notificar las opciones procede a pedir el valor elegido
 
     print('\n - El largo del arreglo es de ' + str(largo) + ' ms - ')
@@ -33,7 +33,7 @@ def calc_vel(mat, delta, long, op):
     # long: longitud del arreglo
 
     l = long
-    s = 0 # punto de partida
+    s = 0 # start - punto de partida
     d = delta
     cant_inter = l // d # calcula total de intervalos
     # cant_inter = 150 # para pruebas
@@ -76,6 +76,8 @@ def calc_vel(mat, delta, long, op):
         # aumenta el valor de los limites del intervalo para la proxima vuelta
         s += delta
         d += delta
+        if d > long: # ante un valor de intervalo no divisible por el largo del arreglo de manera entera
+            break    # se truncarán los samples que falten para completar dicho largo
 
     return vec_vel_x, vec_vel_y
 
@@ -91,11 +93,11 @@ def crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time):
             vy_dup.append((vec_Vy[i]))
 
     # Genera tabla
-    mat = pd.DataFrame({'Tiempo':vec_time ,
-                   'Vel X':vx_dup ,
+    tope_sup = delta * len(vec_Vx)
+    mat = pd.DataFrame({'Tiempo':vec_time[:tope_sup], # este index determina el tope a partir de cual
+                   'Vel X':vx_dup,                   # se truncarán los samples
                    'Vel Y': vy_dup})
 
-    
     return mat
 
 def graficadora(mat_vel, delta, ruta):
