@@ -56,11 +56,11 @@ def calc_vel(mat, delta, long, op):
         # calcula la distancia recorrida por cada eje
         # Condicion para convertir o no a valores absolutos
         if op == 1:
-            dx = abs(xf - xi)
-            dy = abs(yf - yi)
-        else:
             dx = xf - xi
             dy = yf - yi
+        elif op == 2:
+            dx = abs(xf - xi)
+            dy = abs(yf - yi)
 
         # calcula la velocidad como distancia recorrida (en pixeles)
         # dividido el tiempo empleado (largo del intervalo en milisegundos)
@@ -127,33 +127,58 @@ def imprime_menu(): # MENU PRINCIPAL
     print('')
     print(' 1 - Generar gráficas de velocidad')
     print(' 2 - Generar gráficas 3D de trayectorias')
+    print(' 0 - Finalizar')
+
+def imprime_op1():
+    print('')
+    print('--------------------------------------------------------------')
+    print('             - GRAFICADORA DE VELOCIDADES - ')
+    print('--------------------------------------------------------------')
+    print('')
+    print(' 1 - Utilizar valores con signo')
+    print(' 2 - Convertir a valores absolutos')
+    print(' 0 - Volver')
 
 def valida_op(): # valida los ingresos por teclado para opciones entre 1 o 2
-    nums = '12'
+    nums = '120'
     op = input('\n -Ingrese opcion deseada: ')
     while op not in nums or len(op) != 1: #si el ingreso no esta en nums o tiene largo distinto de 1 entra en el bucle
         op = input(' -Error, ingrese una opcion valida: ')
     return int(op)
 
 # LOGICA PRINCIPAL
-imprime_menu()
 
-op = valida_op() # carga opcion principal
+op = -1 # inicia opcion en -1 para forzar el bucle
+while op != 0: # ciclo que controla el menu principal
+    imprime_menu()
+    op = valida_op() # carga opcion principal
 
-op_abs = int(input('\nConvertir a positivo: 0 No - 1 Si: '))
+    if op == 1:
+        op1 = -1 # inicia opcion en -1 para forzar el bucle
+        while op1 != 0: # ciclo que controla menu secundario
+            imprime_op1()
+            op1 = valida_op() # elección de valores abs o no
+            if op1 == 0: # excepción para retroceder al menu principal sin
+                continue # hacer nada más luego de ingresado un cero
 
-for rec in vec_in: # iterador principal
-    to_open = dir_input + '/' + rec  # crea directorio util
-    arch_open = pd.read_csv(to_open, delimiter=';') # abre el csv
-    ruta_save = dir_out + '/' + os.path.splitext(rec)[0] + '.png'
+            for rec in vec_in: # iterador principal
+                to_open = dir_input + '/' + rec  # crea directorio util
+                arch_open = pd.read_csv(to_open, delimiter=';') # abre el csv
+                ruta_save = dir_out + '/' + os.path.splitext(rec)[0] + '.png'
 
-    df_format = pd.DataFrame(arch_open) # convierte a data frame
-    df_f2 = df_format.transpose() # Matrix transpuesta (auxiliar)
-    largo_set = len(df_format) # Longitud del arreglo
-    vec_time = df_format['Tmilisegundos']
+                df_format = pd.DataFrame(arch_open) # convierte a data frame
+                df_f2 = df_format.transpose() # Matrix transpuesta (auxiliar)
+                largo_set = len(df_format) # Longitud del arreglo
+                vec_time = df_format['Tmilisegundos']
 
-    delta = es_divisible(largo_set) # carga el valor del intervalo
-    vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op_abs) # crea vectores de velocidad
-    mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time) # nueva matrix con velocidades
-    graficadora(mat_vel, delta, ruta_save)
-    # break
+                delta = es_divisible(largo_set) # carga el valor del intervalo
+                vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op1) # crea vectores de velocidad
+                mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time) # nueva matrix con velocidades
+                graficadora(mat_vel, delta, ruta_save)
+                # break
+    elif op == 2:
+        pass # AQUI VA LA GRAFICADORA 3D
+    else:
+        print('\n--------------------------------')
+        print(' - El programa ha finalizado -')
+        print('--------------------------------')
