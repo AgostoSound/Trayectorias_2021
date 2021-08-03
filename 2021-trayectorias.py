@@ -119,8 +119,29 @@ def graficadora(mat_vel, delta, ruta):
     plt.savefig(ruta, dpi=199)
     plt.show()
 
+def imprime_menu(): # MENU PRINCIPAL
+    print('')
+    print('-----------------------------------------------------------------')
+    print('             - ANALISIS DE TRAYECTORIAS 2021 - ')
+    print('-----------------------------------------------------------------')
+    print('')
+    print(' 1 - Generar gráficas de velocidad')
+    print(' 2 - Generar gráficas 3D de trayectorias')
+
+def valida_op(): # valida los ingresos por teclado para opciones entre 1 o 2
+    nums = '12'
+    op = input('\n -Ingrese opcion deseada: ')
+    while op not in nums or len(op) != 1: #si el ingreso no esta en nums o tiene largo distinto de 1 entra en el bucle
+        op = input(' -Error, ingrese una opcion valida: ')
+    return int(op)
+
 # LOGICA PRINCIPAL
-op = int(input('\nConvertir a positivo: 0 No - 1 Si: '))
+imprime_menu()
+
+op = valida_op() # carga opcion principal
+
+op_abs = int(input('\nConvertir a positivo: 0 No - 1 Si: '))
+
 for rec in vec_in: # iterador principal
     to_open = dir_input + '/' + rec  # crea directorio util
     arch_open = pd.read_csv(to_open, delimiter=';') # abre el csv
@@ -132,7 +153,7 @@ for rec in vec_in: # iterador principal
     vec_time = df_format['Tmilisegundos']
 
     delta = es_divisible(largo_set) # carga el valor del intervalo
-    vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op) # crea vectores de velocidad
+    vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op_abs) # crea vectores de velocidad
     mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time) # nueva matrix con velocidades
     graficadora(mat_vel, delta, ruta_save)
     # break
