@@ -5,8 +5,9 @@ import os
 import matplotlib.pyplot as plt
 
 # CARPETAS IN-OUT
-dir_input = './Pruebas Piloto/025/Suj1/Recorridos'
-vec_in = os.listdir(dir_input)
+dir_input = './Pruebas Piloto' # carpeta de ENSAYOS
+vec_in = os.listdir(dir_input) # lista de subcarpetas de ensayos
+subdir_comun = '/Suj1/Recorridos/' # fragmento de direccion comun a todos
 dir_out = './SALIDAS'
 
 # FUNCIONES
@@ -48,10 +49,10 @@ def calc_vel(mat, delta, long, op):
         # print(mat_aux)
 
         # extrae posiciones iniciales y finales en X e Y
-        xi = mat_aux['X'][s]
-        xf = mat_aux['X'][d-1]
-        yi = mat_aux['Y'][s]
-        yf = mat_aux['Y'][d-1]
+        xi = int(mat_aux['X'][s])
+        xf = int(mat_aux['X'][d-1])
+        yi = int(mat_aux['Y'][s])
+        yf = int(mat_aux['Y'][d-1])
 
         # calcula la distancia recorrida por cada eje
         # Condicion para convertir o no a valores absolutos
@@ -161,21 +162,24 @@ while op != 0: # ciclo que controla el menu principal
             if op1 == 0: # excepción para retroceder al menu principal sin
                 continue # hacer nada más luego de ingresado un cero
 
-            for rec in vec_in: # iterador principal
-                to_open = dir_input + '/' + rec  # crea directorio util
-                arch_open = pd.read_csv(to_open, delimiter=';') # abre el csv
-                ruta_save = dir_out + '/' + os.path.splitext(rec)[0] + '.png'
+            for ensayo in vec_in: # iterador principal de carpetas 001 002 ...
+                dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
+                vec_rec = os.listdir(dir_rec) # lista de pruebas de cada ensayo
+                for rec in vec_rec: # iterador secundario para cada prueba
+                    to_open = dir_rec + rec # directorio util para abrir .csv
+                    arch_open = pd.read_csv(to_open, delimiter=';', decimal=',') # abre el csv
+                    ruta_save = dir_out + '/' + os.path.splitext(rec)[0] + '.png' #directorio de salida
 
-                df_format = pd.DataFrame(arch_open) # convierte a data frame
-                df_f2 = df_format.transpose() # Matrix transpuesta (auxiliar)
-                largo_set = len(df_format) # Longitud del arreglo
-                vec_time = df_format['Tmilisegundos']
+                    df_format = pd.DataFrame(arch_open) # convierte a data frame
+                    df_f2 = df_format.transpose() # Matrix transpuesta (auxiliar)
+                    largo_set = len(df_format) # Longitud del arreglo
+                    vec_time = df_format['Tmilisegundos']
 
-                delta = es_divisible(largo_set) # carga el valor del intervalo
-                vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op1) # crea vectores de velocidad
-                mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time) # nueva matrix con velocidades
-                graficadora(mat_vel, delta, ruta_save)
-                # break
+                    delta = es_divisible(largo_set) # carga el valor del intervalo
+                    vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op1) # crea vectores de velocidad
+                    mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time) # nueva matrix con velocidades
+                    graficadora(mat_vel, delta, ruta_save)
+                    break
     elif op == 2:
         pass # AQUI VA LA GRAFICADORA 3D
     else:
