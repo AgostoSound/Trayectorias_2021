@@ -17,46 +17,67 @@ dir_out = './SALIDAS'
 
 #_______________________________ FUNCIONES ____________________________________
 
-def extrae_pos(mat):
-    vx1, vy1, vx2, vy2 = [], [], [], []
-    if mat['figura'][1] == 'C':
-        fig = 'Cuadrado'
-    elif mat['figura'][1] == 'T':
-        fig = 'Triangulo'
-    for i in range(len(mat)):
-        if mat['participante'][i] == 'P1':
-            vx1.append(mat['x'][i])
-            vy1.append(mat['y'][i])
-        elif mat['participante'][i] == 'P2':
-            vx2.append(mat['x'][i])
-            vy2.append(mat['y'][i])
-    return vx1, vy1, vx2, vy2, fig
+def plotea(ax, df):
 
-def graficadora(posX, posY, vt):
+    print('VAMOS A MORIR TODOS')
+    zad = df.query('Estado == 0')
+    print(zad)
 
-    # Dibuja los dos desplazamientos
+    # posX, posY, vt = zad['X'], zad['Y'], zad['Tmilisegundos']
+    # ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
+
+def graficadora2(df):
+    # Dibuja el desplazamiento
     ax = plt.axes(projection='3d')
-    ax.plot3D(posX, posY, vt, 'blue', lw=1.5, label='Suj1')
+    # ax.plot3D(posX, posY, vt, 'red', lw=1.5, label='Poner label')
+
+    plotea(ax, df)
 
     # Seccion de labels y textos
-    ax.set_xlabel('Mov. Horizontal (pixels)')
-    ax.set_ylabel('Mov. Vertical (pixels)')
-    ax.set_zlabel('Tiempo (s)')
+    ax.set_xlabel('X (pixels)')
+    ax.set_ylabel('Y (pixels)')
+    ax.set_zlabel('Tiempo (ms)')
 
     # Delimita la zona a mostrar
-    ax.set_xlim(-680, 680)
-    ax.set_ylim(-384, 384)
+    ax.set_xlim(0, 900)
+    ax.set_ylim(0, 600)
     # ax.set_zlim(0, 10)
 
     # Dibuja rectangulo en el suelo = total de pantalla de pruebas
-    # p = Rectangle((-680, -384), 1360, 768, color='black', alpha=0.15, fc='yellow')
+    # p = Rectangle((0, 0), 900, 600, color='black', alpha=0.15, fc='yellow')
     # ax.add_patch(p)
     # art3d.pathpatch_2d_to_3d(p, z=0, zdir="z")
 
-    #Dibuja Triangulo o Cuadrado contenedor
+    # Dibuja figura en el suelo
 
     # Genera nombre y guarda / muestra
+    plt.show()
 
+def graficadora(posX, posY, vt, e):
+    # Dibuja el desplazamiento
+    ax = plt.axes(projection='3d')
+    # ax.plot3D(posX, posY, vt, 'red', lw=1.5, label='Poner label')
+
+    plotea(ax, posX, posY, vt, e)
+
+    # Seccion de labels y textos
+    ax.set_xlabel('X (pixels)')
+    ax.set_ylabel('Y (pixels)')
+    ax.set_zlabel('Tiempo (ms)')
+
+    # Delimita la zona a mostrar
+    ax.set_xlim(0, 900)
+    ax.set_ylim(0, 600)
+    # ax.set_zlim(0, 10)
+
+    # Dibuja rectangulo en el suelo = total de pantalla de pruebas
+    # p = Rectangle((0, 0), 900, 600, color='black', alpha=0.15, fc='yellow')
+    # ax.add_patch(p)
+    # art3d.pathpatch_2d_to_3d(p, z=0, zdir="z")
+
+    #Dibuja figura en el suelo
+
+    # Genera nombre y guarda / muestra
     plt.show()
 
 def Cuadrado(ax):
@@ -114,16 +135,20 @@ def main(vec_in, subdir_comun, dir_out):
 
         for rec in vec_rec:  # iterador secundario para cada prueba
             to_open = dir_rec + rec  # directorio util para abrir .csv
+
+            # AUXILIAR, BORRAR
+            to_open = './Pruebas Piloto/025/Suj1/Recorridos/025_1_01.csv'
+
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
             para_title = os.path.splitext(rec)[0]
             ruta_save = dir_out + '/3D_' + para_title + '.png'  # directorio de salida
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
-            largo_set = len(df_format)  # Longitud del arreglo
-            posX, posY, vec_time = df_format['X'], df_format['Y'], df_format['Tmilisegundos']
+            # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora(posX, posY, vec_time)
-            # break
-        # break
+            graficadora2(df_format)
+            # graficadora(posX, posY, vec_time, estado)
+            break
+        break
 
 main(vec_in, subdir_comun, dir_out)
