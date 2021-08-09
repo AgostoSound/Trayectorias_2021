@@ -46,6 +46,7 @@ def main():
 
         # GRAFICADORA DE VELOCIDADES
         if op == 1:
+            delta_comun = -1 # opcion para fijar o no un intervalo comun
             op1 = -1  # inicia opcion en -1 para forzar el bucle
             while op1 != 0:  # ciclo que controla menu secundario
                 imprime_op1()
@@ -53,8 +54,15 @@ def main():
                 if op1 == 0:  # excepción para retroceder al menu principal sin
                     continue  # hacer nada más luego de ingresado un cero
 
+                # Bloque para fijar o no un intervalo comun
+                print('\n  - ¿ Desea fijar un intervalo de muestreo ?  1-Si   0-No')
+                op_delta = valida_op() # carga opcion para fijar o no (bug de la op 3)
+                if op_delta == 1:
+                    delta_comun = int(input('Ingrese intervalo de muestreo: ')) # carga intervalo
+
                 # Aqui ejecuta toda la rama del speed plotter desde el otro scipt
-                sp.speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out)
+                sp.speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun)
+                print('\n - Graficas generadas con exito -')
 
         # GRAFICADORA DE TRAYECTORIAS
         elif op == 2:

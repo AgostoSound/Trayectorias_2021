@@ -114,13 +114,21 @@ def graficadora(mat_vel, delta, ruta):
     ax.grid()
 
     plt.savefig(ruta, dpi=199)
-    plt.show()
+    # plt.show()
 
 #____________________________  PRINCIPAL  _____________________________________
-def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out):
+def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
+
+    # control de flujo para el uso o no de intervalo comun
+    # si delta_comun ingresa como -1 significa que no desea un intervalo comun
+    flag_delta = False
+    if delta_comun != -1:
+        flag_delta = True
+
     for ensayo in vec_in:  # iterador principal de carpetas 001 002 ...
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
         vec_rec = os.listdir(dir_rec)  # lista de pruebas de cada ensayo
+
         for rec in vec_rec:  # iterador secundario para cada prueba
             to_open = dir_rec + rec  # directorio util para abrir .csv
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
@@ -131,8 +139,16 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out):
             largo_set = len(df_format)  # Longitud del arreglo
             vec_time = df_format['Tmilisegundos']
 
-            delta = es_divisible(largo_set)  # carga el valor del intervalo
+            # si la bandera esta arriba setea el delta tal como ingresó
+            if flag_delta:
+                delta = delta_comun
+            # si la bandera esta baja pide un intervalo por cada ensayo
+            else:
+                delta = es_divisible(largo_set)  # carga el valor del intervalo
+
             vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op1)  # crea vectores de velocidad
             mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time)  # nueva matrix con velocidades
             graficadora(mat_vel, delta, ruta_save)
-            # break
+
+            break
+        break
