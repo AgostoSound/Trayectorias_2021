@@ -1,6 +1,7 @@
 #_______________________________ LIBRERIAS ____________________________________
 import os
 import Speed_Plotter as sp
+import Recorrido_figs as rf
 
 #_______________________________ HARD CODE ____________________________________
 dir_input = './Pruebas Piloto' # carpeta de ENSAYOS
@@ -66,7 +67,9 @@ def main():
 
         # GRAFICADORA DE TRAYECTORIAS
         elif op == 2:
-            pass  # AQUI VA LA GRAFICADORA 3D
+            print('\n - Se están generando las gráficas 3D, aguarde un momento... ')
+            rf.main(vec_in, subdir_comun, dir_out)
+            print('\n - Graficas generadas - ')
         else:
             print('\n--------------------------------')
             print(' - El programa ha finalizado -')
