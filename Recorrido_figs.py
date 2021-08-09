@@ -20,11 +20,17 @@ dir_out = './SALIDAS'
 def plotea(ax, df):
 
     print('VAMOS A MORIR TODOS')
-    zad = df.query('Estado == 0')
-    print(zad)
 
-    # posX, posY, vt = zad['X'], zad['Y'], zad['Tmilisegundos']
-    # ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
+    posX, posY, vt = [], [], []
+
+    for i in range(len(df['Estado'])):
+        if df['Estado'][i] == 1:
+            posX.append(df['X'][i])
+            posY.append(df['Y'][i])
+            vt.append(df['Tmilisegundos'][i])
+        else:
+            break
+    ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
 
 def graficadora2(df):
     # Dibuja el desplazamiento
