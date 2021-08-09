@@ -97,7 +97,7 @@ def crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time):
 
     return mat
 
-def graficadora(mat_vel, delta, ruta):
+def graficadora(mat_vel, delta, ruta, para_title):
     # convierte los vectores a tipo de dato numerico
     t, vx, vy = np.array(mat_vel['Tiempo']), np.array(mat_vel['Vel X']), np.array(mat_vel['Vel Y'])
 
@@ -109,7 +109,7 @@ def graficadora(mat_vel, delta, ruta):
     ax.set(xlabel='Tiempo (ms)', ylabel='Vel (px/ms)',
            title=subtit)
 
-    fig.suptitle('Variacion de velocidad entre sujetos', fontsize=16)
+    fig.suptitle('Velocidad entre sujetos - Ensayo: ' + para_title, fontsize=16)
     ax.legend()
     ax.grid()
 
@@ -132,7 +132,8 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
         for rec in vec_rec:  # iterador secundario para cada prueba
             to_open = dir_rec + rec  # directorio util para abrir .csv
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
-            ruta_save = dir_out + '/' + os.path.splitext(rec)[0] + '.png'  # directorio de salida
+            para_title = os.path.splitext(rec)[0]
+            ruta_save = dir_out + '/' + para_title + '.png'  # directorio de salida
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
             df_f2 = df_format.transpose()  # Matrix transpuesta (auxiliar)
@@ -148,7 +149,7 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
 
             vec_Vx, vec_Vy = calc_vel(df_format, delta, largo_set, op1)  # crea vectores de velocidad
             mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time)  # nueva matrix con velocidades
-            graficadora(mat_vel, delta, ruta_save)
+            graficadora(mat_vel, delta, ruta_save, para_title)
 
             break
         break
