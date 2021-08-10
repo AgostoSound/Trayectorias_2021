@@ -17,54 +17,37 @@ dir_out = './SALIDAS'
 
 #_______________________________ FUNCIONES ____________________________________
 
-def plotea(ax, df):
+# def plotea(ax, posX, posY, vt, e):
+#
+#     # vectores, variables y banderas
+#     vX, vY, vt, ve = [], [], [], []
+#     b0 = False
+#     b1 = False
+#
+#     # Estado inicial de las banderas
+#     if e[0] == 1:
+#         b1 = True
+#     else:
+#         b0 = True
+#
+#     while e == 1:
+#         vX.append([]), vY.append([]), vt.append([])
+#
+#             ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
 
-    print('VAMOS A MORIR TODOS')
 
-    posX, posY, vt = [], [], []
 
-    for i in range(len(df['Estado'])):
-        if df['Estado'][i] == 1:
-            posX.append(df['X'][i])
-            posY.append(df['Y'][i])
-            vt.append(df['Tmilisegundos'][i])
-        else:
-            break
-    ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
-
-def graficadora2(df):
-    # Dibuja el desplazamiento
-    ax = plt.axes(projection='3d')
-    # ax.plot3D(posX, posY, vt, 'red', lw=1.5, label='Poner label')
-
-    plotea(ax, df)
-
-    # Seccion de labels y textos
-    ax.set_xlabel('X (pixels)')
-    ax.set_ylabel('Y (pixels)')
-    ax.set_zlabel('Tiempo (ms)')
-
-    # Delimita la zona a mostrar
-    ax.set_xlim(0, 900)
-    ax.set_ylim(0, 600)
-    # ax.set_zlim(0, 10)
-
-    # Dibuja rectangulo en el suelo = total de pantalla de pruebas
-    # p = Rectangle((0, 0), 900, 600, color='black', alpha=0.15, fc='yellow')
-    # ax.add_patch(p)
-    # art3d.pathpatch_2d_to_3d(p, z=0, zdir="z")
-
-    # Dibuja figura en el suelo
-
-    # Genera nombre y guarda / muestra
-    plt.show()
 
 def graficadora(posX, posY, vt, e):
     # Dibuja el desplazamiento
-    ax = plt.axes(projection='3d')
-    # ax.plot3D(posX, posY, vt, 'red', lw=1.5, label='Poner label')
 
-    plotea(ax, posX, posY, vt, e)
+    fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    ax = plt.axes(projection='3d')
+
+    ax.plot3D(posX, posY, vt, 'darkblue', lw=1.5, label='Poner label')
+
+    # plotea(ax, posX, posY, vt, e) # Intento de cambiar el color de la trayectoria
 
     # Seccion de labels y textos
     ax.set_xlabel('X (pixels)')
@@ -76,60 +59,40 @@ def graficadora(posX, posY, vt, e):
     ax.set_ylim(0, 600)
     # ax.set_zlim(0, 10)
 
-    # Dibuja rectangulo en el suelo = total de pantalla de pruebas
-    # p = Rectangle((0, 0), 900, 600, color='black', alpha=0.15, fc='yellow')
-    # ax.add_patch(p)
-    # art3d.pathpatch_2d_to_3d(p, z=0, zdir="z")
+    Figura_2(ax)
 
-    #Dibuja figura en el suelo
+    # ax.invert_yaxis()
+    ax.invert_xaxis()
+
+    ax.set_ylim(0, 600)
 
     # Genera nombre y guarda / muestra
+
     plt.show()
 
-def Cuadrado(ax):
-
-    x1 = [-197, 180, 180, -197]
-    y1 = [-164, -164, -164, -164]
-    z1 = [0, 0, 40, 40]
+def Figura_1(ax):
+    # Puntos en (x y z) que forman el polígono
+    x1 = [150, 150, 490, 490, 740, 420, 230, 230, 400, 580, 410, 410, 230, 230]
+    y1 = [600, 310, 0, 260, 260, 600, 600, 520, 520, 340, 340, 170, 350, 600]
+    z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
-    x2 = [180, 180, 180, 180]
-    y2 = [189, -164, -164, 189]
-    z2 = [0, 0, 40, 40]
-    vert_2 = [list(zip(x2, y2, z2))]
-    ax.add_collection3d(Poly3DCollection(vert_2, color='m', linewidths=0.3, alpha=0.1))
-
-    x3 = [-197, 180, 180, -197]
-    y3 = [189, 189, 189, 189]
-    z3 = [0, 0, 40, 40]
-    vert_3 = [list(zip(x3, y3, z3))]
-    ax.add_collection3d(Poly3DCollection(vert_3, color='m', linewidths=0.3, alpha=0.1))
-
-    x4 = [-197, -197, -197, -197]
-    y4 = [189, -164, -164, 189]
-    z4 = [0, 0, 40, 40]
-    vert_4 = [list(zip(x4, y4, z4))]
-    ax.add_collection3d(Poly3DCollection(vert_4, color='m', linewidths=0.3, alpha=0.1))
-
-def Triangulo(ax):
-    x1 = [-269, 249, 249, -269]
-    y1 = [-223, -223, -223, -223]
-    z1 = [0, 0, 40, 40]
+def Figura_2(ax):
+    # Puntos en (x y z) que forman el polígono
+    x1 = [480, 20, 280, 450, 890, 670, 480, 480, 640, 770, 450, 300, 150, 480]
+    y1 = [450, 600, 130, 260, 20, 580, 450, 380, 490, 160, 330, 230, 490, 380]
+    z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
-    x2 = [-269, -10, -10, -269]
-    y2 = [-223, 244, 244, -223]
-    z2 = [0, 0, 40, 40]
-    vert_2 = [list(zip(x2, y2, z2))]
-    ax.add_collection3d(Poly3DCollection(vert_2, color='m', linewidths=0.3, alpha=0.1))
-
-    x3 = [249, -10, -10, 249]
-    y3 = [-223, 244, 244, -223]
-    z3 = [0, 0, 40, 40]
-    vert_3 = [list(zip(x3, y3, z3))]
-    ax.add_collection3d(Poly3DCollection(vert_3, color='m', linewidths=0.3, alpha=0.1))
+def Figura_3(ax):
+    # Puntos en (x y z) que forman el polígono
+    x1 = [200, 700, 700, 410, 410, 200, 200, 280, 280, 490, 490, 620, 620, 200]
+    y1 = [60, 60, 550, 550, 340, 340, 140, 140, 260, 260, 470, 470, 140, 140]
+    z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vert_1 = [list(zip(x1, y1, z1))]
+    ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 
 #____________________________  PRINCIPAL  _____________________________________
@@ -150,10 +113,10 @@ def main(vec_in, subdir_comun, dir_out):
             ruta_save = dir_out + '/3D_' + para_title + '.png'  # directorio de salida
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
-            # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora2(df_format)
-            # graficadora(posX, posY, vec_time, estado)
+            posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
+
+            graficadora(posX, posY, vec_time, estado)
             break
         break
 
