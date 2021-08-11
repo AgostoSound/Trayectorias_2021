@@ -17,37 +17,48 @@ dir_out = './SALIDAS'
 
 #_______________________________ FUNCIONES ____________________________________
 
-# def plotea(ax, posX, posY, vt, e):
-#
-#     # vectores, variables y banderas
-#     vX, vY, vt, ve = [], [], [], []
-#     b0 = False
-#     b1 = False
-#
-#     # Estado inicial de las banderas
-#     if e[0] == 1:
-#         b1 = True
-#     else:
-#         b0 = True
-#
-#     while e == 1:
-#         vX.append([]), vY.append([]), vt.append([])
-#
-#             ax.plot3D(posX, posY, vt, color='red', lw=1.5, label='')
+def plotea(ax, df_gordo):
 
+    vec_changes = [] # vector que almacena los index de cambios
+    flag = False # banderita traviesa
+    estado_anterior = -1 #hace que siempre agregue el 0 como primer elemento del vec de cambios
 
+    # recorre hasta el penultimo index del DF
+    for i in range(len(df_gordo['X'])-1):
+        elem = df_gordo[:][i:i+1] # levanta una sola fila
+        estado_actual = int(elem['Estado']) # guarda el valor del casillero "e" y lo vuelve entero
 
+        # tal como está, siempre da TRUE en la primera vuelta
+        if estado_actual != estado_anterior:
+            vec_changes.append(i)
+        estado_anterior = estado_actual
 
-def graficadora(posX, posY, vt, e):
+    # recorre el vector de cambios - setea limites inf. y sup.
+    for j in range(len(vec_changes)-1):
+        l_inf, l_sup = vec_changes[j], vec_changes[j+1]
+        df_pedazo = df_gordo[:][l_inf:l_sup] # dataFrame cortado
+
+        # vectores parciales para ir a cada color
+        pX, pY, vT, vE = df_pedazo['X'], df_pedazo['Y'], df_pedazo['Tmilisegundos'], df_pedazo['Estado']
+
+        # condicion de ploteado
+        if int(vE[l_inf]) == 0:
+            ax.plot3D(pX, pY, vT, color='red', lw=1.5, label='')
+        elif int(vE[l_inf]) == 1:
+            ax.plot3D(pX, pY, vT, color='orange', lw=1.5, label='')
+
+def graficadora(df):
     # Dibuja el desplazamiento
 
     fig = plt.figure()
     # ax = fig.add_subplot(111, projection='3d')
     ax = plt.axes(projection='3d')
 
-    ax.plot3D(posX, posY, vt, 'darkblue', lw=1.5, label='Poner label')
+    # graficador simple
+    # ax.plot3D(posX, posY, vt, 'darkblue', lw=1.5, label='Poner label')
 
-    # plotea(ax, posX, posY, vt, e) # Intento de cambiar el color de la trayectoria
+    # FUNCION MAGICA - plotea de distinto color segun está dentro o fuera de la figura
+    plotea(ax, df)
 
     # Seccion de labels y textos
     ax.set_xlabel('X (pixels)')
@@ -59,7 +70,7 @@ def graficadora(posX, posY, vt, e):
     ax.set_ylim(0, 600)
     # ax.set_zlim(0, 10)
 
-    Figura_2(ax)
+    Figura_1(ax)
 
     # ax.invert_yaxis()
     ax.invert_xaxis()
@@ -94,7 +105,6 @@ def Figura_3(ax):
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
-
 #____________________________  PRINCIPAL  _____________________________________
 def main(vec_in, subdir_comun, dir_out):
 
@@ -114,9 +124,9 @@ def main(vec_in, subdir_comun, dir_out):
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
 
-            posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
+            # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora(posX, posY, vec_time, estado)
+            graficadora(df_format)
             break
         break
 
