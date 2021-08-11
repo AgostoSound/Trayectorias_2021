@@ -68,7 +68,7 @@ def main():
         # GRAFICADORA DE TRAYECTORIAS
         elif op == 2:
             print('\n - Se están generando las gráficas 3D, aguarde un momento... ')
-            rf.main(vec_in, subdir_comun, dir_out)
+            rf.main_rf(vec_in, subdir_comun, dir_out, dir_input)
             print('\n - Graficas generadas - ')
         else:
             print('\n--------------------------------')

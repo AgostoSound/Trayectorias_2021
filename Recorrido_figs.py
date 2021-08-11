@@ -10,10 +10,10 @@ from matplotlib.patches import Rectangle
 import mpl_toolkits.mplot3d.art3d as art3d
 
 #___________________________ BORRAR HARD CODE__________________________________
-dir_input = './Pruebas Piloto' # carpeta de ENSAYOS
-vec_in = os.listdir(dir_input) # lista de subcarpetas de ensayos
-subdir_comun = '/Suj1/Recorridos/' # fragmento de direccion comun a todos
-dir_out = './SALIDAS'
+# dir_input = './Pruebas Piloto' # carpeta de ENSAYOS
+# vec_in = os.listdir(dir_input) # lista de subcarpetas de ensayos
+# subdir_comun = '/Suj1/Recorridos/' # fragmento de direccion comun a todos
+# dir_out = './SALIDAS'
 
 #_______________________________ FUNCIONES ____________________________________
 
@@ -47,7 +47,8 @@ def plotea(ax, df_gordo):
         elif int(vE[l_inf]) == 1:
             ax.plot3D(pX, pY, vT, color='orange', lw=1.5, label='')
 
-def graficadora(df):
+def graficadora(df, para_title, ruta_save):
+
     # Dibuja el desplazamiento
 
     fig = plt.figure()
@@ -61,6 +62,7 @@ def graficadora(df):
     plotea(ax, df)
 
     # Seccion de labels y textos
+    fig.suptitle('Trayectoria - Ensayo: ' + para_title, fontsize=16)
     ax.set_xlabel('X (pixels)')
     ax.set_ylabel('Y (pixels)')
     ax.set_zlabel('Tiempo (ms)')
@@ -70,16 +72,15 @@ def graficadora(df):
     ax.set_ylim(0, 600)
     # ax.set_zlim(0, 10)
 
+    # colocar aqui una condicion para elegir la figura del suelo
     Figura_1(ax)
 
-    # ax.invert_yaxis()
     ax.invert_xaxis()
-
     ax.set_ylim(0, 600)
 
     # Genera nombre y guarda / muestra
-
-    plt.show()
+    plt.savefig(ruta_save)
+    # plt.show()
 
 def Figura_1(ax):
     # Puntos en (x y z) que forman el polígono
@@ -106,7 +107,7 @@ def Figura_3(ax):
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 #____________________________  PRINCIPAL  _____________________________________
-def main(vec_in, subdir_comun, dir_out):
+def main_rf(vec_in, subdir_comun, dir_out, dir_input):
 
     for ensayo in vec_in:  # iterador principal de carpetas 001 002 ...
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
@@ -116,7 +117,7 @@ def main(vec_in, subdir_comun, dir_out):
             to_open = dir_rec + rec  # directorio util para abrir .csv
 
             # AUXILIAR, BORRAR
-            to_open = './Pruebas Piloto/025/Suj1/Recorridos/025_1_01.csv'
+            # to_open = './Pruebas Piloto/025/Suj1/Recorridos/025_1_01.csv'
 
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
             para_title = os.path.splitext(rec)[0]
@@ -126,8 +127,8 @@ def main(vec_in, subdir_comun, dir_out):
 
             # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora(df_format)
-            break
-        break
+            graficadora(df_format, para_title, ruta_save)
+            # break
+        # break
 
-main(vec_in, subdir_comun, dir_out)
+# main_rf(vec_in, subdir_comun, dir_out, dir_input)
