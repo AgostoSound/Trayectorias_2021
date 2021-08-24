@@ -45,13 +45,13 @@ def plotea(ax, df_gordo):
         if int(vE[l_inf]) == 0:
             ax.plot3D(pX, pY, vT, color='red', lw=1.5, label='')
         elif int(vE[l_inf]) == 1:
-            ax.plot3D(pX, pY, vT, color='orange', lw=1.5, label='')
+            ax.plot3D(pX, pY, vT, color='lightgreen', lw=1.5, label='')
 
-def graficadora(df, para_title, ruta_save):
+def graficadora(df, para_title, ruta_save, figura):
 
     # Dibuja el desplazamiento
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8,8)) # tamaño de la figura
     # ax = fig.add_subplot(111, projection='3d')
     ax = plt.axes(projection='3d')
 
@@ -73,14 +73,21 @@ def graficadora(df, para_title, ruta_save):
     # ax.set_zlim(0, 10)
 
     # colocar aqui una condicion para elegir la figura del suelo
-    Figura_1(ax)
+    if figura == 1:
+        Figura_1(ax)
+    elif figura == 2:
+        Figura_2(ax)
+    elif figura == 3:
+        Figura_3(ax)
 
     ax.invert_xaxis()
     ax.set_ylim(0, 600)
 
+    ax.view_init(None, 120) #controla el angulo de vision inicial (elevacion, azimuth)
+
     # Genera nombre y guarda / muestra
-    plt.savefig(ruta_save)
-    # plt.show()
+    # plt.savefig(ruta_save)
+    plt.show()
 
 def Figura_1(ax):
     # Puntos en (x y z) que forman el polígono
@@ -113,21 +120,31 @@ def main_rf(vec_in, subdir_comun, dir_out, dir_input):
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
         vec_rec = os.listdir(dir_rec)  # lista de pruebas de cada ensayo
 
+        dir_metadata = dir_input + '/' + ensayo + '/Suj1/' + ensayo + '_1.csv' #ruta de metadata
+        metadata = pd.read_csv(dir_metadata, delimiter=';', decimal=',') # abre metadata en una matriz
+        df_metadata = pd.DataFrame(metadata) # convierte a DataFrame
+
         for rec in vec_rec:  # iterador secundario para cada prueba
             to_open = dir_rec + rec  # directorio util para abrir .csv
 
-            # AUXILIAR, BORRAR
+            # CON ESTA LINEA SE LEVANTA UN ARCHIVO CONCRETO
+            # Si se va a usar hay que encender los break de abajo
             # to_open = './Pruebas Piloto/025/Suj1/Recorridos/025_1_01.csv'
 
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
+
             para_title = os.path.splitext(rec)[0]
-            ruta_save = dir_out + '/3D_' + para_title + '.png'  # directorio de salida
+            ruta_save = dir_out + '/' + para_title + '_t3D.png'  # directorio de salida
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
 
+            num_rec = int(rec[7]) - 1
+            fig = int(df_metadata['FiguraExplorada'][num_rec])
+
             # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora(df_format, para_title, ruta_save)
+            graficadora(df_format, para_title, ruta_save, fig)
+
             # break
         # break
 

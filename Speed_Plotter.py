@@ -125,6 +125,8 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
     if delta_comun != -1:
         flag_delta = True
 
+    print('\n - Se están generando las gráficas 3D, aguarde un momento... ')
+
     for ensayo in vec_in:  # iterador principal de carpetas 001 002 ...
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
         vec_rec = os.listdir(dir_rec)  # lista de pruebas de cada ensayo
@@ -151,5 +153,5 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
             mat_vel = crea_mat_vel(vec_Vx, vec_Vy, delta, vec_time)  # nueva matrix con velocidades
             graficadora(mat_vel, delta, ruta_save, para_title)
 
-            break
-        break
+            # break
+        # break
