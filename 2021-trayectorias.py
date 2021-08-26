@@ -40,6 +40,14 @@ def valida_op(): # valida los ingresos por teclado para opciones entre 1 o 2
 
 #____________________________  PRINCIPAL  _____________________________________
 def main():
+
+    # verifica si existen carpetas con los nombres de los ensayos en el directorio
+    # de salida, si no existen los crea a todos
+    for cad_ensayo in vec_in:
+        path = dir_out + '/' + cad_ensayo
+        if not (os.path.exists(path)):
+            os.mkdir(path)
+
     op = -1  # inicia opcion en -1 para forzar el bucle
     while op != 0:  # ciclo que controla el menu principal
         imprime_menu()

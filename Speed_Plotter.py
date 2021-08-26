@@ -125,7 +125,7 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
     if delta_comun != -1:
         flag_delta = True
 
-    print('\n - Se están generando las gráficas 3D, aguarde un momento... ')
+    print('\n - Se están generando las gráficas, aguarde un momento... ')
 
     for ensayo in vec_in:  # iterador principal de carpetas 001 002 ...
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
@@ -135,7 +135,11 @@ def speed_ploter(op1, vec_in, dir_input, subdir_comun, dir_out, delta_comun):
             to_open = dir_rec + rec  # directorio util para abrir .csv
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
             para_title = os.path.splitext(rec)[0]
-            ruta_save = dir_out + '/' + para_title + '.png'  # directorio de salida
+
+            if op1 == 1:
+                ruta_save = dir_out + '/' + ensayo + '/' + para_title + 'Signos.png'  # directorio de salida
+            elif op1 == 2:
+                ruta_save = dir_out + '/' + ensayo + '/' + para_title + 'Absolutos.png'
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
             df_f2 = df_format.transpose()  # Matrix transpuesta (auxiliar)

@@ -73,12 +73,14 @@ def graficadora(df, para_title, ruta_save, figura):
     # ax.set_zlim(0, 10)
 
     # colocar aqui una condicion para elegir la figura del suelo
-    if figura == 1:
+    if figura == 0:
         Figura_1(ax)
-    elif figura == 2:
+    elif figura == 1:
         Figura_2(ax)
-    elif figura == 3:
+    elif figura == 2:
         Figura_3(ax)
+    # elif figura == 3: # a la espera de nuevos datos
+    #     Figura_3(ax)
 
     ax.invert_xaxis()
     ax.set_ylim(0, 600)
@@ -86,29 +88,37 @@ def graficadora(df, para_title, ruta_save, figura):
     ax.view_init(None, 120) #controla el angulo de vision inicial (elevacion, azimuth)
 
     # Genera nombre y guarda / muestra
-    # plt.savefig(ruta_save)
-    plt.show()
+    plt.savefig(ruta_save)
+    # plt.show()
 
-def Figura_1(ax):
+def Figura_0(ax): # TRIANGULO DE FAMILIARIZACION
     # Puntos en (x y z) que forman el polígono
-    x1 = [150, 150, 490, 490, 740, 420, 230, 230, 400, 580, 410, 410, 230, 230]
-    y1 = [600, 310, 0, 260, 260, 600, 600, 520, 520, 340, 340, 170, 350, 600]
+    x1 = [185, 630, 630, 330, 330, 560, 560, 330, 330]
+    y1 = [530, 85, 530, 530, 460, 460, 230, 460, 530]
+    z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vert_1 = [list(zip(x1, y1, z1))]
+    ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
+
+def Figura_1(ax): # PARECE UN ENTER, PONELE
+    # Puntos en (x y z) que forman el polígono
+    x1 = [220, 680, 680, 430, 430, 220, 220, 290, 290, 500, 500, 610, 610, 220]
+    y1 = [80, 80, 530, 530, 340, 340, 150, 150, 270, 270, 460, 460, 150, 150]
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
-def Figura_2(ax):
+def Figura_2(ax): # FLECHA APUNTANDO ABAJO A LA IZQUIERDA
     # Puntos en (x y z) que forman el polígono
-    x1 = [480, 20, 280, 450, 890, 670, 480, 480, 640, 770, 450, 300, 150, 480]
-    y1 = [450, 600, 130, 260, 20, 580, 450, 380, 490, 160, 330, 230, 490, 380]
+    x1 = [200, 200, 480, 480, 700, 430, 270, 270, 410, 550, 410, 410, 270, 270]
+    y1 = [550, 320, 50, 270, 270, 550, 550, 480, 480, 340, 340, 200, 340, 550]
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
-def Figura_3(ax):
+def Figura_3(ax): # NI PABLO PICASSO SE ATREVIÓ A TANTO
     # Puntos en (x y z) que forman el polígono
-    x1 = [200, 700, 700, 410, 410, 200, 200, 280, 280, 490, 490, 620, 620, 200]
-    y1 = [60, 60, 550, 550, 340, 340, 140, 140, 260, 260, 470, 470, 140, 140]
+    x1 = [480, 180, 295, 450, 760, 635, 480, 480, 590, 660, 450, 340, 270, 480]
+    y1 = [450, 565, 125, 260, 145, 585, 450, 380, 480, 240, 330, 230, 470, 380]
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
@@ -134,7 +144,7 @@ def main_rf(vec_in, subdir_comun, dir_out, dir_input):
             arch_open = pd.read_csv(to_open, delimiter=';', decimal=',')  # abre el csv
 
             para_title = os.path.splitext(rec)[0]
-            ruta_save = dir_out + '/' + para_title + '_t3D.png'  # directorio de salida
+            ruta_save = dir_out + '/' + ensayo + '/' + para_title + '_t3D.png'  # directorio de salida
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
 
