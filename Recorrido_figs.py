@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from mpl_toolkits import mplot3d
+
+from mpl_toolkits.mplot3d.axes3d import Axes3D
+from mpl_toolkits.mplot3d import proj3d
+
 from matplotlib.patches import Rectangle
 import mpl_toolkits.mplot3d.art3d as art3d
 
@@ -55,9 +57,6 @@ def graficadora(df, para_title, ruta_save, figura):
     # ax = fig.add_subplot(111, projection='3d')
     ax = plt.axes(projection='3d')
 
-    # graficador simple
-    # ax.plot3D(posX, posY, vt, 'darkblue', lw=1.5, label='Poner label')
-
     # FUNCION MAGICA - plotea de distinto color segun está dentro o fuera de la figura
     plotea(ax, df)
 
@@ -68,19 +67,36 @@ def graficadora(df, para_title, ruta_save, figura):
     ax.set_zlabel('Tiempo (ms)')
 
     # Delimita la zona a mostrar
-    ax.set_xlim(0, 900)
-    ax.set_ylim(0, 600)
+    ax.set_xlim(0, 1360)
+    ax.set_ylim(0, 768)
     # ax.set_zlim(0, 10)
+
+    # ---------BLOQUE QUE CONTROLA LA ESCALA DEL 3D PLOT-------------------
+    x_scale = 4
+    y_scale = 3
+    z_scale = 4
+
+    scale = np.diag([x_scale, y_scale, z_scale, 1.0])
+    scale = scale * (1.0 / scale.max())
+    scale[3, 3] = 1.0
+
+    def short_proj():
+        return np.dot(Axes3D.get_proj(ax), scale)
+
+    ax.get_proj = short_proj
+    # ---------------------------------------------------------------------
+
+    suelo_datos(ax) # plotea el suelo amarillo
 
     # colocar aqui una condicion para elegir la figura del suelo
     if figura == 0:
-        Figura_1(ax)
+        Figura_0(ax)
     elif figura == 1:
-        Figura_2(ax)
+        Figura_1(ax)
     elif figura == 2:
+        Figura_2(ax)
+    elif figura == 3:
         Figura_3(ax)
-    # elif figura == 3: # a la espera de nuevos datos
-    #     Figura_3(ax)
 
     ax.invert_xaxis()
     ax.set_ylim(0, 600)
@@ -88,8 +104,15 @@ def graficadora(df, para_title, ruta_save, figura):
     ax.view_init(None, 120) #controla el angulo de vision inicial (elevacion, azimuth)
 
     # Genera nombre y guarda / muestra
-    plt.savefig(ruta_save)
-    # plt.show()
+    # plt.savefig(ruta_save)
+    plt.show()
+
+def suelo_datos(ax):
+    x1 = [0, 900, 900, 0]
+    y1 = [0, 0, 600, 600]
+    z1 = [0, 0, 0, 0]
+    vert_1 = [list(zip(x1, y1, z1))]
+    ax.add_collection3d(Poly3DCollection(vert_1, color='y', linewidths=0.3, alpha=0.1))
 
 def Figura_0(ax): # TRIANGULO DE FAMILIARIZACION
     # Puntos en (x y z) que forman el polígono
@@ -101,39 +124,30 @@ def Figura_0(ax): # TRIANGULO DE FAMILIARIZACION
 
 def Figura_1(ax): # PARECE UN ENTER, PONELE
     # Puntos en (x y z) que forman el polígono
-<<<<<<< Updated upstream
     x1 = [220, 680, 680, 430, 430, 220, 220, 290, 290, 500, 500, 610, 610, 220]
     y1 = [80, 80, 530, 530, 340, 340, 150, 150, 270, 270, 460, 460, 150, 150]
-=======
     x1 = [200, 700, 700, 410, 410, 200, 200, 280, 280, 490, 490, 620, 620, 200]
     y1 = [60, 60, 550, 550, 340, 340, 140, 140, 260, 260, 470, 470, 140, 140]
->>>>>>> Stashed changes
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 def Figura_2(ax): # FLECHA APUNTANDO ABAJO A LA IZQUIERDA
     # Puntos en (x y z) que forman el polígono
-<<<<<<< Updated upstream
     x1 = [200, 200, 480, 480, 700, 430, 270, 270, 410, 550, 410, 410, 270, 270]
     y1 = [550, 320, 50, 270, 270, 550, 550, 480, 480, 340, 340, 200, 340, 550]
-=======
     x1 = [150, 150, 490, 490, 740, 420, 230, 230, 400, 580, 410, 410, 230, 230]
     y1 = [600, 310, 0, 260, 260, 600, 600, 520, 520, 340, 340, 170, 350, 600]
->>>>>>> Stashed changes
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 def Figura_3(ax): # NI PABLO PICASSO SE ATREVIÓ A TANTO
     # Puntos en (x y z) que forman el polígono
-<<<<<<< Updated upstream
     x1 = [480, 180, 295, 450, 760, 635, 480, 480, 590, 660, 450, 340, 270, 480]
     y1 = [450, 565, 125, 260, 145, 585, 450, 380, 480, 240, 330, 230, 470, 380]
-=======
     x1 = [480, 20, 280, 450, 890, 670, 480, 480, 640, 770, 450, 300, 150, 480]
     y1 = [450, 600, 130, 260, 20, 580, 450, 380, 490, 160, 330, 230, 490, 380]
->>>>>>> Stashed changes
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
