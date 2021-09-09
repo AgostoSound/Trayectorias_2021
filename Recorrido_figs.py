@@ -99,55 +99,75 @@ def graficadora(df, para_title, ruta_save, figura):
         Figura_3(ax)
 
     ax.invert_xaxis()
-    ax.set_ylim(0, 600)
 
     ax.view_init(None, 120) #controla el angulo de vision inicial (elevacion, azimuth)
-
     # Genera nombre y guarda / muestra
     # plt.savefig(ruta_save)
     plt.show()
 
 def suelo_datos(ax):
-    x1 = [0, 900, 900, 0]
-    y1 = [0, 0, 600, 600]
+    x1 = [230, 1130, 1130, 230]
+    y1 = [84, 84, 684, 684]
     z1 = [0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='y', linewidths=0.3, alpha=0.1))
 
 def Figura_0(ax): # TRIANGULO DE FAMILIARIZACION
     # Puntos en (x y z) que forman el polígono
-    x1 = [185, 630, 630, 330, 330, 560, 560, 330, 330]
-    y1 = [530, 85, 530, 530, 460, 460, 230, 460, 530]
+
+    # ORIGINALES PASADOS POR FER
+    # x1 = [185, 630, 630, 330, 330, 560, 560, 330, 330]
+    # y1 = [530, 85, 530, 530, 460, 460, 230, 460, 530]
+
+    # RELATIVOS CALCULADOS (Suma 230 a X y Suma 84 a Y)
+    x1 = [415, 860, 860, 560, 560, 790, 790, 560, 560]
+    y1 = [614, 169, 614, 614, 544, 544, 314, 544, 614]
+
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 def Figura_1(ax): # PARECE UN ENTER, PONELE
     # Puntos en (x y z) que forman el polígono
-    x1 = [220, 680, 680, 430, 430, 220, 220, 290, 290, 500, 500, 610, 610, 220]
-    y1 = [80, 80, 530, 530, 340, 340, 150, 150, 270, 270, 460, 460, 150, 150]
-    x1 = [200, 700, 700, 410, 410, 200, 200, 280, 280, 490, 490, 620, 620, 200]
-    y1 = [60, 60, 550, 550, 340, 340, 140, 140, 260, 260, 470, 470, 140, 140]
+
+    # ORIGINALES PASADOS POR FER
+    # x1 = [220, 680, 680, 430, 430, 220, 220, 290, 290, 500, 500, 610, 610, 220]
+    # y1 = [80, 80, 530, 530, 340, 340, 150, 150, 270, 270, 460, 460, 150, 150]
+
+    # RELATIVOS CALCULADOS (Suma 230 a X y Suma 84 a Y)
+    x1 = [450, 910, 910, 660, 660, 450, 450, 520, 520, 730, 730, 840, 840, 450]
+    y1 = [164, 164, 614, 614, 424, 424, 234, 234, 354, 354, 544, 544, 234, 234]
+
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 def Figura_2(ax): # FLECHA APUNTANDO ABAJO A LA IZQUIERDA
     # Puntos en (x y z) que forman el polígono
-    x1 = [200, 200, 480, 480, 700, 430, 270, 270, 410, 550, 410, 410, 270, 270]
-    y1 = [550, 320, 50, 270, 270, 550, 550, 480, 480, 340, 340, 200, 340, 550]
-    x1 = [150, 150, 490, 490, 740, 420, 230, 230, 400, 580, 410, 410, 230, 230]
-    y1 = [600, 310, 0, 260, 260, 600, 600, 520, 520, 340, 340, 170, 350, 600]
+
+    # ORIGINALES PASADOS POR FER
+    # x1 = [200, 200, 480, 480, 700, 430, 270, 270, 410, 550, 410, 410, 270, 270]
+    # y1 = [550, 320, 50, 270, 270, 550, 550, 480, 480, 340, 340, 200, 340, 550]
+
+    # RELATIVOS CALCULADOS (Suma 230 a X y Suma 84 a Y)
+    x1 = [430, 430, 710, 710, 930, 660, 500, 500, 640, 780, 640, 640, 500, 500]
+    y1 = [634, 404, 134, 354, 354, 634, 634, 564, 564, 424, 424, 284, 424, 634]
+
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
 
 def Figura_3(ax): # NI PABLO PICASSO SE ATREVIÓ A TANTO
     # Puntos en (x y z) que forman el polígono
-    x1 = [480, 180, 295, 450, 760, 635, 480, 480, 590, 660, 450, 340, 270, 480]
-    y1 = [450, 565, 125, 260, 145, 585, 450, 380, 480, 240, 330, 230, 470, 380]
-    x1 = [480, 20, 280, 450, 890, 670, 480, 480, 640, 770, 450, 300, 150, 480]
-    y1 = [450, 600, 130, 260, 20, 580, 450, 380, 490, 160, 330, 230, 490, 380]
+
+    # ORIGINALES PASADOS POR FER
+    # x1 = [480, 180, 295, 450, 760, 635, 480, 480, 590, 660, 450, 340, 270, 480]
+    # y1 = [450, 565, 125, 260, 145, 585, 450, 380, 480, 240, 330, 230, 470, 380]
+
+    # RELATIVOS CALCULADOS (Suma 230 a X y Suma 84 a Y)
+    x1 = [710, 410, 525, 680, 990, 865, 710, 710, 820, 890, 680, 570, 500, 710]
+    y1 = [534, 649, 209, 344, 229, 669, 534, 464, 564, 324, 414, 314, 554, 464]
+
     z1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     vert_1 = [list(zip(x1, y1, z1))]
     ax.add_collection3d(Poly3DCollection(vert_1, color='m', linewidths=0.3, alpha=0.1))
