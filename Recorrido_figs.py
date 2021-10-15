@@ -102,8 +102,8 @@ def graficadora(df, para_title, ruta_save, figura):
 
     ax.view_init(None, 120) #controla el angulo de vision inicial (elevacion, azimuth)
     # Genera nombre y guarda / muestra
-    # plt.savefig(ruta_save)
-    plt.show()
+    plt.savefig(ruta_save)
+    # plt.show()
 
 def suelo_datos(ax):
     x1 = [230, 1130, 1130, 230]
@@ -197,7 +197,7 @@ def main_rf(vec_in, subdir_comun, dir_out, dir_input):
 
             df_format = pd.DataFrame(arch_open)  # convierte a data frame
 
-            num_rec = int(rec[7]) - 1
+            num_rec = int(rec[6]+rec[7]) - 1
             fig = int(df_metadata['FiguraExplorada'][num_rec])
 
             # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
