@@ -105,8 +105,8 @@ def graficadora(mat_vel, delta, ruta, para_title):
     fig, ax = plt.subplots()
     ax.plot(t, vx, label='Suj X')
     ax.plot(t, vy, label='Suj Y')
-    subtit = 'Intervalo de muestra cada ' + str(delta) + ' milisegundos'
-    ax.set(xlabel='Tiempo (ms)', ylabel='Vel (px/ms)',
+    subtit = 'Intervalo de muestra cada ' + str(delta) + ' samples'
+    ax.set(xlabel='Samples', ylabel='Vel (px/sample)',
            title=subtit)
 
     fig.suptitle('Velocidad entre sujetos - Ensayo: ' + para_title, fontsize=16)

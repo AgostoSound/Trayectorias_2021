@@ -49,7 +49,7 @@ def plotea(ax, df_gordo):
         elif int(vE[l_inf]) == 1:
             ax.plot3D(pX, pY, vT, color='lightgreen', lw=1.5, label='')
 
-def graficadora(df, para_title, ruta_save, figura):
+def graficadora(df, para_title, ruta_save, figura, fam):
 
     # Dibuja el desplazamiento
 
@@ -64,7 +64,7 @@ def graficadora(df, para_title, ruta_save, figura):
     fig.suptitle('Trayectoria - Ensayo: ' + para_title, fontsize=16)
     ax.set_xlabel('X (pixels)')
     ax.set_ylabel('Y (pixels)')
-    ax.set_zlabel('Tiempo (ms)')
+    ax.set_zlabel('Samples')
 
     # Delimita la zona a mostrar
     ax.set_xlim(0, 1360)
@@ -88,15 +88,24 @@ def graficadora(df, para_title, ruta_save, figura):
 
     suelo_datos(ax) # plotea el suelo amarillo
 
-    # colocar aqui una condicion para elegir la figura del suelo
-    if figura == 0:
-        Figura_0(ax)
-    elif figura == 1:
-        Figura_1(ax)
-    elif figura == 2:
-        Figura_2(ax)
-    elif figura == 3:
-        Figura_3(ax)
+    # colocar aqui una condicion para elegir la figura del suelo teniendo en cuenta si
+    # se realizo o no la etapa de familiarizacion
+    if fam == 0:
+        if figura == 0:
+            Figura_1(ax)
+        elif figura == 1:
+            Figura_2(ax)
+        elif figura == 2:
+            Figura_3(ax)
+    elif fam == 1:
+        if figura == 0:
+            Figura_0(ax)
+        elif figura == 1:
+            Figura_1(ax)
+        elif figura == 2:
+            Figura_2(ax)
+        elif figura == 3:
+            Figura_3(ax)
 
     ax.invert_xaxis()
 
@@ -179,6 +188,13 @@ def main_rf(vec_in, subdir_comun, dir_out, dir_input):
         dir_rec = dir_input + '/' + ensayo + subdir_comun  # se posiciona dentro de la carpeta Recorridos de cada ensayo
         vec_rec = os.listdir(dir_rec)  # lista de pruebas de cada ensayo
 
+        if len(vec_rec) == 9: # bloque para determinar si se realizo o no familiarizacion
+            fam = 0 # no se realizo
+        elif len(vec_rec) == 12:
+            fam = 1 # si se realizo
+        else: # no debe darse otro caso que no sean alguno de los 2 anteriores
+            print(' - - - - -  EL NUMERO DE PASADAS ES INCORRECTO - - - - - ')
+
         dir_metadata = dir_input + '/' + ensayo + '/Suj1/' + ensayo + '_1.csv' #ruta de metadata
         metadata = pd.read_csv(dir_metadata, delimiter=';', decimal=',') # abre metadata en una matriz
         df_metadata = pd.DataFrame(metadata) # convierte a DataFrame
@@ -202,7 +218,7 @@ def main_rf(vec_in, subdir_comun, dir_out, dir_input):
 
             # posX, posY, vec_time, estado = df_format['X'], df_format['Y'], df_format['Tmilisegundos'], df_format['Estado']
 
-            graficadora(df_format, para_title, ruta_save, fig)
+            graficadora(df_format, para_title, ruta_save, fig, fam)
 
             # break
         # break
